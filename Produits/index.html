@@ -1,0 +1,225 @@
+<!DOCTYPE html>  
+ <!-- index.php !-->  
+ <html>  
+      <head>  
+           <title>Crud App</title>  
+           <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />  
+           <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>  
+      </head>  
+      <body>  
+            <nav class="navbar navbar-default">
+             <div class="container-fluid">
+             <div class="container">
+                 <div class="navbar-header">
+                 <a class="navbar-brand" href="http://localhost/testAngularJs/Produits/index.html">Agridata Application</a>
+                 </div>
+             <div class="collapse navbar-collapse">
+              <ul class="nav navbar-nav navbar-right">
+                    <li><a href="http://localhost/testAngularJs/LoginAdmin/index.php">Log Out</a></li>
+              </ul>
+             </div> 
+             </div>
+             </div>
+            </nav>
+            <br /><br />  
+                    <div class="container">
+                    <header class="jumbotron" style="background-color: #fcece9">
+                    <div class="container">
+                    <h1 style="text-align: center;">Welcome to BeePhyto</h1>
+                    </div>   
+                    </div> 
+                    <div class="container">
+                    <div class="row">
+                       <div class="col-md-2">
+                           <ul class="nav nav-pills nav-stacked">
+                                <li class="active"><a href="#" style="background-color: #fcece9"><font color="#0000">Home</font></a></li>
+                                <li><a href="http://localhost/testAngularJs/Actualites/index.html"><font color="#0000">Actualites</font></a></li>
+                                <li><a href="http://localhost/testAngularJs/Categorie/index.html"><font color="#0000">Categories</font></a></li>
+                                <li><a href="http://localhost/testAngularJs/Culture/index.html"><font color="#0000">Cultures</font></a></li>
+                                <li><a href="http://localhost/testAngularJs/Ennemis/index.html"><font color="#0000">Ennemis</font></a></li>
+                                <li><a href="http://localhost/testAngularJs/Societes/index.html"><font color="#0000">Societes</font></a></li>
+                                <li><a href="http://localhost/testAngularJs/Agences/index.html"><font color="#0000">Agences</font></a></li>
+                                <li><a href="http://localhost/testAngularJs/Produits/index.html"><font color="#0000">Produits</font></a></li>
+                              </ul>
+                       </div>
+                    <div class="col-md-10">
+                    <div ng-app="myapp" ng-controller="usercontroller"> 
+                     <label>Nom Commercial</label>  
+                     <input type="text" name="_nom_commercial" ng-model="nom_commercial" class="form-control" />  
+                     <br />
+                     <label>Numero Homologation</label>  
+                     <input type="text" name="_num_homologation" ng-model="num_homologation" class="form-control" />  
+                     <br /> 
+                     <label>Tableau Toxicologique</label>  
+                     <input type="text" name="_tableau_toxicologique" ng-model="tableau_toxicologique" class="form-control" />
+                     <br />
+                     <label>Teneur</label>  
+                     <input type="text" name="_teneur" ng-model="teneur" class="form-control" />  
+                     <br />
+                     <label>Dose</label>  
+                     <input type="text" name="_dose" ng-model="dose" class="form-control" />  
+                     <br />  
+                     <label>Dar</label>  
+                     <input type="text" name="_dar" ng-model="dar" class="form-control" />  
+                     <br /> 
+                     <label>Prix</label>  
+                     <input type="text" name="_prix" ng-model="prix" class="form-control" />  
+                     <br />
+                     <label>Culture</label>  
+                     <select name="_cultureNom" ng-model="cultureNom" class="form-control" ng-init="loadCulture()" >
+                            <option value="">Select culture</option>
+                            <option ng-repeat="culture in cultures" value="{{culture.cultureNom}}">{{culture.cultureNom}}</option>
+
+                     </select>  
+                     <br /> 
+                     <label>Ennemi</label>  
+                     <select name="_ennemisNom" ng-model="ennemisNom" class="form-control" ng-init="loadEnnemis()" >
+                            <option value="">Select ennemi</option>
+                            <option ng-repeat="ennemi in ennemis" value="{{ennemi.ennemisNom}}">{{ennemi.ennemisNom}}</option>
+
+                     </select>  
+                     <br />       
+                     <label>Raison Sociale</label>  
+                     <select name="_raison_sociale" ng-model="raison_sociale" class="form-control" ng-init="loadSociete()" >
+                            <option value="">Select societe</option>
+                            <option ng-repeat="societe in societes" value="{{societe.raison_sociale}}">{{societe.raison_sociale}}</option>
+
+                     </select>  
+                     <br />       
+                     <label>Categorie</label>  
+                     <select name="_nomCategorie" ng-model="nomCategorie" class="form-control" ng-init="loadCategorie()" >
+                            <option value="">Select categorie</option>
+                            <option ng-repeat="categorie in categories" value="{{categorie.nomCategorie}}">{{categorie.nomCategorie}}</option>
+
+                     </select>  
+                     <br />             
+                     <input type="hidden" ng-model="produitId" />
+                     <input type="submit" name="btnInsert" class="btn btn-danger" ng-click="insertData()" value="{{btnName}}"/> 
+                     <br /><br />  
+                     <table class="table table-bordered">  
+                          <tr>  
+                               <th>Nom Commercial</th>  
+                               <th>Numero Homologation</th>
+                               <th>Tableau Toxicologique</th> 
+                               <th>Teneur</th>
+                               <th>Dose</th>
+                               <th>Dar</th>
+                               <th>Prix</th>
+                               <th>Culture</th>
+                               <th>Ennemi</th>
+                               <th>Raison Sociale</th>
+                               <th>Categorie</th>
+                               <th>Update</th> 
+                               <th>Delete</th>
+                          </tr>  
+                          <tr ng-repeat="x in produits">  
+                               <td>{{x.nom_commercial}}</td>  
+                               <td>{{x.num_homologation}}</td>
+                               <td>{{x.tableau_toxicologique}}</td>
+                               <td>{{x.teneur}}</td>
+                               <td>{{x.dose}}</td>
+                               <td>{{x.dar}}</td>
+                               <td>{{x.prix}}</td>
+                               <td>{{x.cultureNom}}</td>
+                               <td>{{x.ennemisNom}}</td>
+                               <td>{{x.raison_sociale}}</td>
+                               <td>{{x.nomCategorie}}</td>
+                               <td><button ng-click="updateData(x.produitId, x.nom_commercial,x.num_homologation,x.tableau_toxicologique, x.teneur,x.dose,x.dar,x.prix,x.cultureNom,x.ennemisNom,x.raison_sociale,x.nomCategorie)" class="btn btn-info btn-xs">Update</button></td>
+                               <td><button ng-click="deleteData(x.produitId)" class="btn btn-danger btn-xs">Delete</button></td>  
+                          </tr>  
+                     </table>
+                     </div> 
+                     </div> 
+                  </div>
+                  </div>
+      </body>  
+ </html>  
+ <script>  
+ var app = angular.module("myapp",[]);  
+ app.controller("usercontroller", function($scope, $http){  
+  $scope.btnName = "ADD"; 
+      $scope.insertData = function(){  
+           $http.post(  
+                "insert.php",  
+                {'nom_commercial':$scope.nom_commercial,'num_homologation':$scope.num_homologation,'tableau_toxicologique':$scope.tableau_toxicologique,'teneur':$scope.teneur,
+                'dose':$scope.dose,'dar':$scope.dar,'prix':$scope.prix,'cultureNom':$scope.cultureNom,'ennemisNom':$scope.ennemisNom,'raison_sociale':$scope.raison_sociale,'nomCategorie':$scope.nomCategorie,
+                'btnName':$scope.btnName, 
+                'produitId':$scope.produitId}  
+           ).success(function(data){  
+                alert(data);  
+                $scope.nom_commercial = null;  
+                $scope.num_homologation = null; 
+                $scope.tableau_toxicologique = null; 
+                $scope.teneur = null; 
+                $scope.dose = null; 
+                $scope.dar= null; 
+                $scope.prix = null; 
+                $scope.cultureNom= null;
+                $scope.ennemisNom= null;
+                $scope.raison_sociale= null;
+                $scope.nomCategorie= null;
+                $scope.btnName = "ADD"; 
+                $scope.displayData();  
+           });  
+      }
+      $scope.displayData = function(){  
+           $http.get("select.php")  
+           .success(function(data){  
+                $scope.produits = data;  
+           });  
+      }
+         $scope.updateData = function(produitId, nom_commercial,num_homologation,tableau_toxicologique,teneur,dose ,dar,prix,cultureNom,ennemisNom,raison_sociale,nomCategorie){  
+           $scope.produitId = produitId;  
+           $scope.nom_commercial = nom_commercial;  
+           $scope.num_homologation = num_homologation;
+           $scope.tableau_toxicologique = tableau_toxicologique;
+           $scope.teneur= teneur;
+           $scope.dose = dose;
+           $scope.dar = dar;
+           $scope.prix = prix;
+           $scope.cultureNom = cultureNom;
+           $scope.ennemisNom = ennemisNom;
+           $scope.raison_sociale = raison_sociale;
+           $scope.nomCategorie = nomCategorie;
+           $scope.btnName = "Update";  
+      }
+      $scope.deleteData = function(produitId){  
+           if(confirm("Are you sure you want to delete this data?"))  
+           {  
+                $http.post("delete.php", {'produitId':produitId})  
+                .success(function(data){  
+                     alert(data);  
+                     $scope.displayData();  
+                });  
+           }  
+           else  
+           {  
+                return false;  
+           }  
+      }
+       $scope.loadCulture = function(){  
+           $http.get("load_culture.php")  
+           .success(function(data){  
+                $scope.cultures = data;  
+           })  
+      }
+      $scope.loadCategorie = function(){  
+           $http.post("load_categorie.php")  
+           .success(function(data){  
+                $scope.categories = data;  
+           });  
+      }
+      $scope.loadSociete = function(){  
+           $http.post("load_societe.php")  
+           .success(function(data){  
+                $scope.societes = data;  
+           });  
+      } 
+      $scope.loadEnnemis = function(){  
+           $http.post("load_ennemis.php")  
+           .success(function(data){  
+                $scope.ennemis = data;  
+           });  
+      }                               
+ });  
+ </script>  

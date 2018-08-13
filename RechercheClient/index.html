@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <title>Agridata App</title>  
+      <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+      <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+      <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"> 
+    </head>
+    <body>
+     <style>
+  .form_style
+  {
+   width: 400px;
+   margin: auto;
+   padding-top: 150px;
+
+
+  }
+  .btn{
+    color: #fff;
+    background-color:  #a6ff4d;
+    width: 120px;
+    font-size: 18px;
+  }
+  .btn-link{
+    color: #fff;
+    font-size: 18px;
+  }
+  .panel-transparent {
+        background: none;
+    }
+
+    .panel-transparent .panel-heading{
+        background: rgba(122, 130, 136, 0.2)!important;
+    }
+
+    .panel-transparent .panel-body{
+        background: rgba(46, 51, 56, 0.2)!important;
+    }
+          body {
+            background-color:#fff;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            background-size: cover;
+            font-family:Lato;*/
+            
+        }
+  </style>
+        <nav class="navbar navbar-default">
+        <div class="container-fluid">
+        <div class="container">
+         <div class="navbar-header">
+            <a class="navbar-brand" href="http://localhost/testAngularJs/RechercheClient/index.html">Agridata Application</a>
+         </div>
+          <div class="collapse navbar-collapse">
+           <ul class="nav navbar-nav navbar-right">
+               <li><a href="http://localhost/testAngularJs/homeClient.html">Home Client</a></li>
+           </ul>
+          </div> 
+          </div>
+          </div>
+          </nav>
+          <br /><br /> 
+          <div class="container">
+          <div ng-app="myapp" ng-controller="usercontroller">
+          <div class="panel  panel-transparent"  style="text-align: center;">
+          <div class="panel-heading">
+           <h3 class="panel-title" style="font-size:200%;"><font color="#cc7a00">Recherche Par:</font></h3>
+          </div>
+          <div class="panel-body">     
+                         <select name="_cultureNom" ng-model="cultureNom" class="form-control" ng-init="loadCulture()" >
+                                <option value="">Culture</option>
+                                <option ng-model="cultureNom" ng-repeat="culture in cultures" value="{{culture.cultureNom}}">{{culture.cultureNom}}</option>
+                         </select>  
+                         <select name="_ennemisNom" ng-model="ennemisNom" class="form-control" ng-init="loadEnnemis()" >
+                                <option value="">Ennemi</option>
+                                <option ng-model="ennemisNom" ng-repeat="ennemi in ennemis" value="{{ennemi.ennemisNom}}">{{ennemi.ennemisNom}}</option>
+
+                         </select>  
+                         <select name="_raison_sociale" ng-model="raison_sociale" class="form-control" ng-init="loadSociete()" >
+                                <option value="">Societe</option>
+                                <option ng-model="raison_sociale" ng-repeat="societe in societes" value="{{societe.raison_sociale}}">{{societe.raison_sociale}}</option>
+
+                         </select>  
+                         <select name="_nomCategorie" ng-model="nomCategorie" class="form-control" ng-init="loadCategorie()" >
+                                <option value="">Categorie</option>
+                                <option ng-model="nomCategorie" ng-repeat="categorie in categories" value="{{categorie.nomCategorie}}">{{categorie.nomCategorie}}</option>
+
+                         </select>
+                         <select name="_nom_commercial" ng-model="nom_commercial" class="form-control" ng-init="loadNomcom()" >
+                                <option value="">Nom Commercial</option>
+                                <option ng-model="nom_commercial" ng-repeat="produit in produits" value="{{produit.nom_commercial}}">{{produit.nom_commercial}}</option>
+
+                         </select>
+                         <br /><br />
+                             <input type="hidden" ng-model="produitId" />
+                             <input type="submit" name="btnSearch" class="btn" ng-click="searchData()" value="{{btnName}}"/> 
+                             <br /><br />  
+
+                </div>
+          </div>
+    <table class="table table-bordered">  
+                          <tr>  
+                               <th>Nom Commercial</th>  
+                               <th>Numero Homologation</th>
+                               <th>Tableau Toxicologique</th> 
+                               <th>Teneur</th>
+                               <th>Dose</th>
+                               <th>Dar</th>
+                               <th>Prix</th>
+                               <th>Culture</th>
+                               <th>Ennemi</th>
+                               <th>Raison Sociale</th>
+                               <th>Categorie</th>
+                          </tr>  
+                          <tr ng-repeat="x in produitss track by $index">  
+                               <td>{{x.nom_commercial}}</td>  
+                               <td>{{x.num_homologation}}</td>
+                               <td>{{x.tableau_toxicologique}}</td>
+                               <td>{{x.teneur}}</td>
+                               <td>{{x.dose}}</td>
+                               <td>{{x.dar}}</td>
+                               <td>{{x.prix}}</td>
+                               <td>{{x.cultureNom}}</td>
+                               <td>{{x.ennemisNom}}</td>
+                               <td>{{x.raison_sociale}}</td>
+                               <td>{{x.nomCategorie}}</td>  
+                          </tr>  
+                     </table>
+  </div>
+  </div>
+
+</body>
+
+ </html>
+ <script>
+ var app = angular.module("myapp",[]);  
+ app.controller("usercontroller", function($scope, $http){ 
+ var filters = ['cultureNom','nom_commercial','nomCategorie','ennemisNom','raison_sociale'];
+ $scope.btnName = "Search"; 
+  $scope.searchData = function(){  
+    let filters_body = {};
+    if($scope.cultureNom){
+        filters_body.cultureNom = $scope.cultureNom;
+    }
+    if($scope.nom_commercial){
+        filters_body.nom_commercial = $scope.nom_commercial;
+    }
+    if($scope.nomCategorie){
+        filters_body.nomCategorie = $scope.nomCategorie;
+    }
+    if($scope.ennemisNom){
+        filters_body.ennemisNom = $scope.ennemisNom;
+    }
+    if($scope.raison_sociale){
+        filters_body.raison_sociale = $scope.raison_sociale;
+    }
+        $http.post("search.php",filters_body)  
+           .success(function(data){  
+                $scope.produitss = data;  
+           })  
+      }
+
+ $scope.loadCulture = function(){  
+           $http.get("load_culture.php")  
+           .success(function(data){  
+                $scope.cultures = data;  
+           })  
+      }
+      $scope.loadCategorie = function(){  
+           $http.post("load_categorie.php")  
+           .success(function(data){  
+                $scope.categories = data;  
+           });  
+      }
+      $scope.loadSociete = function(){  
+           $http.post("load_societe.php")  
+           .success(function(data){  
+                $scope.societes = data;  
+           });  
+      } 
+      $scope.loadEnnemis = function(){  
+           $http.post("load_ennemis.php")  
+           .success(function(data){  
+                $scope.ennemis = data;  
+           });  
+      }
+      $scope.loadNomcom = function(){  
+           $http.post("load_nomcom.php")  
+           .success(function(data){  
+                $scope.produits = data;  
+           });  
+      }
+
+ });  
+
+  </script>
+
+
+
+

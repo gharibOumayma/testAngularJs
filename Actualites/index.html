@@ -1,0 +1,128 @@
+<!DOCTYPE html>  
+ <!-- index.php !-->  
+ <html>  
+      <head>  
+           <title>Crud App</title>  
+           <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />  
+           <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>  
+      </head>  
+      <body>  
+            <nav class="navbar navbar-default">
+             <div class="container-fluid">
+             <div class="container">
+                 <div class="navbar-header">
+                 <a class="navbar-brand" href="http://localhost/testAngularJs/Actualites/index.html">Agridata Application</a>
+                 </div>
+             <div class="collapse navbar-collapse">
+              <ul class="nav navbar-nav navbar-right">
+                    <li><a href="http://localhost/testAngularJs/LoginAdmin/index.php">Log Out</a></li>
+              </ul>
+             </div> 
+             </div>
+             </div>
+            </nav>
+            <br /><br />  
+                    <div class="container">
+                    <header class="jumbotron" style="background-color:#fcece9">
+                    <div class="container">
+                    <h1 style="text-align: center;">Welcome to BeePhyto</h1>
+                    </div>   
+                    </div> 
+                    <div class="container">
+                    <div class="row">
+                       <div class="col-md-2">
+                           <ul class="nav nav-pills nav-stacked">
+                                <li class="active"><a href="#" style="background-color: #fcece9"><font color="#0000">Home</font></a></li>
+                                <li><a href="http://localhost/testAngularJs/Actualites/index.html"><font color="#0000">Actualites</font></a></li>
+                                <li><a href="http://localhost/testAngularJs/Categorie/index.html"><font color="#0000">Categories</font></a></li>
+                                <li><a href="http://localhost/testAngularJs/Culture/index.html"><font color="#0000">Cultures</font></a></li>
+                                <li><a href="http://localhost/testAngularJs/Ennemis/index.html"><font color="#0000">Ennemis</font></a></li>
+                                <li><a href="http://localhost/testAngularJs/Societes/index.html"><font color="#0000">Societes</font></a></li>
+                                <li><a href="http://localhost/testAngularJs/Agences/index.html"><font color="#0000">Agences</font></a></li>
+                                <li><a href="http://localhost/testAngularJs/Produits/index.html"><font color="#0000">Produits</font></a></li>
+                              </ul>
+                       </div>
+                    <div class="col-md-10">
+                    <div ng-app="myapp" ng-controller="usercontroller">  
+                     <label>Titre</label>  
+                     <input type="text" name="_titre" ng-model="titre" class="form-control" />  
+                     <br />  
+                     <label>Description</label>  
+                     <input type="text" name="_description" ng-model="description" class="form-control" />  
+                     <br />
+                     <label>Url</label>  
+                     <input type="text" name="_url" ng-model="url" class="form-control" />  
+                     <br />  
+                     <input type="hidden" ng-model="actualiteId" />
+                     <input type="submit" name="btnInsert" class="btn btn-danger" ng-click="insertData()" value="{{btnName}}"/> 
+                     <br /><br />  
+                     <table class="table table-bordered">  
+                          <tr>  
+                               <th>Titre</th>  
+                               <th>Description</th>
+                               <th>Url</th> 
+                               <th>Date</th>
+                               <th>Update</th> 
+                               <th>Delete</th>
+                          </tr>  
+                          <tr ng-repeat="x in actualites">  
+                               <td>{{x.titre}}</td>  
+                               <td>{{x.description}}</td>
+                               <td>{{x.url}}</td>
+                               <td>{{x.datee}}</td>
+                               <td><button ng-click="updateData(x.actualiteId, x.titre, x.description,x.url)" class="btn btn-info btn-xs">Update</button></td>
+                               <td><button ng-click="deleteData(x.actualiteId)" class="btn btn-danger btn-xs">Delete</button></td>  
+                          </tr>  
+                     </table>
+                     </div> 
+                     </div> 
+                  </div>
+                  </div>
+      </body>  
+ </html>  
+ <script>  
+ var app = angular.module("myapp",[]);  
+ app.controller("usercontroller", function($scope, $http){  
+  $scope.btnName = "ADD"; 
+      $scope.insertData = function(){  
+           $http.post(  
+                "insert.php",  
+                {'titre':$scope.titre, 'description':$scope.description,'url':$scope.url,'btnName':$scope.btnName, 'actualiteId':$scope.actualiteId}  
+           ).success(function(data){  
+                alert(data);  
+                $scope.titre = null;  
+                $scope.description = null;
+                $scope.url = null; 
+                $scope.btnName = "ADD"; 
+                $scope.displayData();  
+           });  
+      }
+      $scope.displayData = function(){  
+           $http.get("select.php")  
+           .success(function(data){  
+                $scope.actualites = data;  
+           });  
+      }
+         $scope.updateData = function(actualiteId, titre, description,url){  
+           $scope.actualiteId = actualiteId;  
+           $scope.titre = titre;  
+           $scope.description = description;  
+           $scope.url = url;
+           $scope.btnName = "Update";  
+      }
+      $scope.deleteData = function(actualiteId){  
+           if(confirm("Are you sure you want to delete this data?"))  
+           {  
+                $http.post("delete.php", {'actualiteId':actualiteId})  
+                .success(function(data){  
+                     alert(data);  
+                     $scope.displayData();  
+                });  
+           }  
+           else  
+           {  
+                return false;  
+           }  
+      }       
+ });  
+ </script>  
